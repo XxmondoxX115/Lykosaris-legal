@@ -1,1 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy Policy — Lykosaris</title>
+<style>
+  :root {
+    --bg: #1e1f22;
+    --panel: #2b2d31;
+    --accent: #4bff00;
+    --text: #dcddde;
+    --muted: #949ba4;
+    --border: #3a3c40;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.65;
+  }
+  header {
+    padding: 48px 24px 24px;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+  }
+  header h1 {
+    color: var(--accent);
+    font-size: 2rem;
+    margin: 0 0 8px;
+  }
+  header p {
+    color: var(--muted);
+    margin: 0;
+  }
+  main {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+  section {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px 28px;
+    margin-bottom: 20px;
+  }
+  h2 {
+    color: var(--accent);
+    font-size: 1.15rem;
+    margin-top: 0;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 10px;
+  }
+  h3 {
+    color: var(--text);
+    font-size: 1rem;
+    margin-bottom: 6px;
+  }
+  ul {
+    padding-left: 20px;
+  }
+  li {
+    margin-bottom: 6px;
+  }
+  code {
+    background: #1e1f22;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.9em;
+    color: var(--accent);
+  }
+  a {
+    color: var(--accent);
+  }
+  .muted {
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+  .badge {
+    display: inline-block;
+    background: rgba(75, 255, 0, 0.12);
+    color: var(--accent);
+    border: 1px solid rgba(75, 255, 0, 0.35);
+    border-radius: 6px;
+    padding: 2px 8px;
+    font-size: 0.8rem;
+    margin-right: 6px;
+    margin-bottom: 4px;
+  }
+</style>
+</head>
+<body>
 
+<header>
+  <h1>🐺 Lykosaris — Privacy Policy</h1>
+  <p class="muted">Last updated: July 19, 2026</p>
+</header>
+
+<main>
+
+<section>
+  <p>This Privacy Policy explains what data the Discord bot <strong>Lykosaris</strong> ("the Bot", "we", "us") collects, why, and how it's handled when you use the Bot in a Discord server ("Server") or interact with it directly.</p>
+  <p>By using Lykosaris, you agree to the collection and use of information as described here. If you do not agree, please stop using the Bot and ask a server administrator to remove it.</p>
+</section>
+
+<section>
+  <h2>1. Information We Collect</h2>
+  <p>We only collect data that is necessary for the Bot's features to work. This is limited to:</p>
+
+  <h3>Identifiers</h3>
+  <ul>
+    <li>Your Discord User ID and, where relevant, the Server (Guild) ID and Channel IDs where a feature was configured or used.</li>
+    <li>We do <strong>not</strong> collect your email address, IP address, phone number, or real name — Discord IDs are the only identifiers we use.</li>
+  </ul>
+
+  <h3>Content you provide to specific features</h3>
+  <p>Some features require you to submit text, which is stored only for that feature to work:</p>
+  <ul>
+    <li><span class="badge">/profile</span> Your "About Me" text and cosmetic preferences (colors, equipped backgrounds, semi-transparent box settings).</li>
+    <li><span class="badge">Tickets</span> The messages sent inside a support ticket, kept as a transcript for the server's staff logs.</li>
+    <li><span class="badge">/contactstaff</span> The messages exchanged between you and server staff through that feature.</li>
+    <li><span class="badge">Trading</span> The title, description, and terms of trade listings you create.</li>
+    <li><span class="badge">Quiz Game</span> Quiz questions/answers created by staff, and aggregated vote counts (not who voted for what) once a poll ends.</li>
+  </ul>
+
+  <h3>Activity &amp; progression data</h3>
+  <ul>
+    <li>Server-specific and global level, XP, and prestige progress.</li>
+    <li>"LYKO Coins" balance, purchases, and inventory (backgrounds, redeemed codes).</li>
+    <li>Voting timestamps from Top.gg, used to show your vote cooldown.</li>
+    <li>Counting-game statistics (current count, record, number of failures) — these are per-server, not tied to who sent which specific message beyond the immediate turn.</li>
+  </ul>
+
+  <h3>Moderation records</h3>
+  <ul>
+    <li>Warnings issued to you by server staff (reason, date, issuing moderator), visible to that server's moderators.</li>
+    <li>Aggregate moderation action counts (e.g. how many kicks/bans a moderator has issued), used for staff statistics only.</li>
+  </ul>
+
+  <h3>Server configuration</h3>
+  <ul>
+    <li>Settings configured by server administrators (channel IDs, role IDs, custom messages, feature toggles). This is configuration data about the Server, not about individual members.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>2. What We Do <em>Not</em> Collect</h2>
+  <ul>
+    <li>We do not read, log, or store the content of your regular messages. The Bot only processes a message's content in real time to check whether it's relevant to an active feature (e.g. a counting-game number, a landmine trigger) — anything not relevant is ignored and never saved.</li>
+    <li>We do not track your activity outside of the specific commands/features you use.</li>
+    <li>We do not sell, rent, or share your data with advertisers or data brokers.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>3. How We Use Your Data</h2>
+  <ul>
+    <li>To operate the features you or your server's staff choose to use (leveling, economy, tickets, moderation tools, games, etc).</li>
+    <li>To keep server-specific statistics (e.g. member/bot counters, rankings) up to date.</li>
+    <li>To prevent abuse of the Bot (e.g. anti-raid detection, cooldowns).</li>
+  </ul>
+</section>
+
+<section>
+  <h2>4. Where Your Data Is Stored</h2>
+  <p>Data is stored in a MongoDB database and processed by the Bot's application code, hosted on a third-party cloud provider (Render). These providers may process data on our behalf but do not use it for their own purposes. No data is knowingly transferred to any other third party except as described in this policy.</p>
+</section>
+
+<section>
+  <h2>5. Data Retention</h2>
+  <ul>
+    <li>Data tied to a Server (settings, levels, tickets, etc.) is generally retained for as long as the Bot remains in that Server.</li>
+    <li>If the Bot is removed from a Server, its server-specific data may be deleted automatically or upon request.</li>
+    <li>Global data tied to your Discord account (e.g. global level, LYKO Coins) persists across servers for as long as your account has interacted with the Bot, unless deletion is requested.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>6. Your Rights</h2>
+  <p>You can request, at any time:</p>
+  <ul>
+    <li><strong>Access</strong> — a summary of the data we hold about you.</li>
+    <li><strong>Deletion</strong> — removal of your personal data from our database.</li>
+    <li><strong>Correction</strong> — fixing inaccurate data (where applicable).</li>
+  </ul>
+  <p>To exercise any of these rights, contact us using the details in section 9. We may need to verify your Discord identity before processing a request.</p>
+</section>
+
+<section>
+  <h2>7. Children's Privacy</h2>
+  <p>Discord requires users to be at least 13 years old (or the applicable age of digital consent in their country). Lykosaris does not knowingly collect data from anyone below that age. If you believe a minor has provided us data in violation of this policy, please contact us so we can remove it.</p>
+</section>
+
+<section>
+  <h2>8. Changes to This Policy</h2>
+  <p>We may update this Privacy Policy from time to time. Material changes will be reflected by updating the "Last updated" date at the top of this page. Continued use of the Bot after changes means you accept the revised policy.</p>
+</section>
+
+<section>
+  <h2>9. Contact</h2>
+  <p>For any privacy questions, data requests, or concerns, reach out via:</p>
+  <ul>
+    <li>Discord: <code>XxmondoxX_115</code></li>
+    <li>Bot support server: <em>https://discord.gg/mAyPdt2ZtY</em></li>
+  </ul>
+</section>
+
+</main>
+</body>
+</html>
