@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-title-en="Privacy Policy — Lykosaris" data-title-es="Política de privacidad — Lykosaris">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -90,97 +90,216 @@
     margin-right: 6px;
     margin-bottom: 4px;
   }
+
+  /* Language switch */
+  html[lang="en"] [data-lang="es"], html[lang="es"] [data-lang="en"] { display: none !important; }
+  .lang-switch {
+    display: inline-flex;
+    gap: 8px;
+    margin-top: 18px;
+  }
+  .lang-switch button {
+    font: inherit;
+    font-size: 0.9rem;
+    color: var(--text);
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 6px 16px;
+    cursor: pointer;
+  }
+  .lang-switch button:hover { border-color: var(--accent); }
+  .lang-switch button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .lang-switch button[aria-pressed="true"] {
+    color: var(--accent);
+    background: rgba(75, 255, 0, 0.12);
+    border-color: var(--accent);
+  }
 </style>
+<script>
+(function () {
+  var SUPPORTED = ['en', 'es'];
+  var KEY = 'lykosaris-lang';
+  var root = document.documentElement;
+
+  function fromUrl() {
+    try {
+      var p = new URLSearchParams(window.location.search).get('lang');
+      return SUPPORTED.indexOf(p) > -1 ? p : null;
+    } catch (e) { return null; }
+  }
+  function fromStorage() {
+    try {
+      var s = window.localStorage.getItem(KEY);
+      return SUPPORTED.indexOf(s) > -1 ? s : null;
+    } catch (e) { return null; }
+  }
+  function fromBrowser() {
+    var l = String(navigator.language || 'en').toLowerCase();
+    return l.indexOf('es') === 0 ? 'es' : 'en';
+  }
+
+  function apply(lang, persist) {
+    root.setAttribute('lang', lang);
+    var title = root.getAttribute('data-title-' + lang);
+    if (title) document.title = title;
+
+    var buttons = document.querySelectorAll('[data-set-lang]');
+    for (var i = 0; i < buttons.length; i++) {
+      buttons[i].setAttribute('aria-pressed', buttons[i].getAttribute('data-set-lang') === lang ? 'true' : 'false');
+    }
+    // Los enlaces entre documentos conservan el idioma elegido.
+    var links = document.querySelectorAll('a[data-internal]');
+    for (var j = 0; j < links.length; j++) {
+      links[j].setAttribute('href', links[j].getAttribute('data-internal') + '?lang=' + lang);
+    }
+    if (persist) {
+      try { window.localStorage.setItem(KEY, lang); } catch (e) {}
+      try { window.history.replaceState(null, '', '?lang=' + lang + window.location.hash); } catch (e) {}
+    }
+  }
+
+  var initial = fromUrl() || fromStorage() || fromBrowser();
+  apply(initial, false);
+  document.addEventListener('DOMContentLoaded', function () { apply(root.getAttribute('lang') || initial, false); });
+
+  document.addEventListener('click', function (event) {
+    var target = event.target;
+    while (target && target !== document && !(target.getAttribute && target.getAttribute('data-set-lang'))) target = target.parentNode;
+    if (target && target.getAttribute && target.getAttribute('data-set-lang')) apply(target.getAttribute('data-set-lang'), true);
+  });
+})();
+</script>
+<noscript><style>html[lang] [data-lang][data-lang] { display: revert !important; } .lang-switch { display: none; }</style></noscript>
+
 </head>
 <body>
 
 <header>
-  <h1>🐺 Lykosaris — Privacy Policy</h1>
-  <p class="muted">Last updated: July 21, 2026</p>
+  <h1><span data-lang="en">🐺 Lykosaris — Privacy Policy</span><span data-lang="es" lang="es">🐺 Lykosaris — Política de privacidad</span></h1>
+  <p class="muted"><span data-lang="en">Last updated: October 4, 2026</span><span data-lang="es" lang="es">Última actualización: 4 de octubre de 2026</span></p>
+  <div class="lang-switch" role="group" aria-label="Language / Idioma">
+    <button type="button" data-set-lang="en" aria-pressed="true">English</button>
+    <button type="button" data-set-lang="es" aria-pressed="false">Español</button>
+  </div>
 </header>
 
-<main>
+<main data-lang="en">
 
 <section>
-  <p>This Privacy Policy explains what data the Discord bot <strong>Lykosaris</strong> ("the Bot", "we", "us") collects, why, and how it's handled when you use the Bot in a Discord server ("Server") or interact with it directly.</p>
+  <p>This Privacy Policy explains what data the Discord bot <strong>Lykosaris</strong> ("the Bot", "we", "us") collects, why, and how it's handled when you use the Bot in a Discord server ("Server") or interact with it directly. It applies to the Bot only; how Discord itself handles your data is described in <a href="https://discord.com/privacy" target="_blank" rel="noopener">Discord's Privacy Policy</a>.</p>
   <p>By using Lykosaris, you agree to the collection and use of information as described here. If you do not agree, please stop using the Bot and ask a server administrator to remove it.</p>
 </section>
 
 <section>
   <h2>1. Information We Collect</h2>
-  <p>We only collect data that is necessary for the Bot's features to work. This is limited to:</p>
+  <p>We only collect data that is necessary for the Bot's features to work, and only for the features that you or your server's staff actually use. This is limited to:</p>
 
   <h3>Identifiers</h3>
   <ul>
-    <li>Your Discord User ID and, where relevant, the Server (Guild) ID and Channel IDs where a feature was configured or used.</li>
+    <li>Your Discord User ID and, where relevant, the Server (Guild), Channel, Role, Message, and Thread IDs where a feature was configured or used.</li>
+    <li>A few features also keep a name as it appeared at the time (for example, <code>/contactstaff</code> conversations keep the username of each participant and the name of the Server).</li>
     <li>We do <strong>not</strong> collect your email address, IP address, phone number, or real name — Discord IDs are the only identifiers we use.</li>
   </ul>
 
   <h3>Content you provide to specific features</h3>
-  <p>Some features require you to submit text, which is stored only for that feature to work:</p>
+  <p>Some features require you (or server staff) to submit text or images, which are stored only for that feature to work:</p>
   <ul>
-    <li><span class="badge">/profile</span> Your "About Me" text and cosmetic preferences (colors, equipped backgrounds, semi-transparent box settings).</li>
-    <li><span class="badge">Tickets</span> The messages sent inside a support ticket, kept as a transcript for the server's staff logs.</li>
-    <li><span class="badge">/contactstaff</span> The messages exchanged between you and server staff through that feature.</li>
-    <li><span class="badge">Trading</span> The title, description, and terms of trade listings you create.</li>
-    <li><span class="badge">Quiz Game</span> Quiz questions/answers created by staff, and aggregated vote counts (not who voted for what) once a poll ends.</li>
+    <li><span class="badge">/profile</span> Your "About Me" text (up to 200 characters), colors, equipped backgrounds, semi-transparent box settings, and — if you have Lykosaris Premium — your frame, ribbon text, and card format choices.</li>
+    <li><span class="badge">Tickets</span> The reason and the answers you give to a ticket's form questions, its priority, and who claimed it. When a ticket is closed, a transcript of its messages is generated and sent as a text file to the Server's log channel (if one is configured). That transcript is kept by the Server in Discord; it is not stored in the Bot's database.</li>
+    <li><span class="badge">/contactstaff</span> The messages exchanged between you and server staff through that feature (text, author name and ID, and date). These messages are also sent as direct messages to you and to the staff members with the configured role(s).</li>
+    <li><span class="badge">Trading &amp; Store</span> The title, description, terms, and optional image link of trade listings you create, who claimed them, their status, and the likes/dislikes left as trade reputation; and the product names, descriptions, price text, and stock of store listings.</li>
+    <li><span class="badge">Teams</span> A team's name, tag, description, emoji, leader, admins, members, and join requests (who asked to join and whether it was accepted, declined, or cancelled).</li>
+    <li><span class="badge">Giveaways</span> The user IDs of the people who entered a giveaway and of its winners.</li>
+    <li><span class="badge">/afk</span> Your AFK status in each Server and the optional message you set for it.</li>
+    <li><span class="badge">Birthdays</span> The day and month of your birthday (no year), if you choose to set it. It is stored once and applies to every Server where you and the Bot are present. Servers that have a birthday channel configured may announce your birthday there, visible to that channel's members.</li>
+    <li><span class="badge">Language</span> Your personal language preference, if you set one.</li>
+    <li><span class="badge">Quiz Game</span> Quiz questions and answers created by staff. Quizzes use Discord's native polls; we only read the total number of votes for the correct answer once a poll ends, never who voted for what.</li>
   </ul>
 
   <h3>Activity &amp; progression data</h3>
   <ul>
-    <li>Server-specific level, XP, and prestige progress.</li>
-    <li>"LYKO Coins" balance, purchases, and inventory (backgrounds, redeemed codes).</li>
-    <li>Voting timestamps from Top.gg, used to show your vote cooldown.</li>
-    <li>Counting-game statistics (current count, record, number of failures) — these are per-server, not tied to who sent which specific message beyond the immediate turn.</li>
+    <li>Server-specific level, XP, and prestige progress, the time of your last XP-earning message (used for the XP cooldown), and an XP history of the last 90 days (used for the weekly and monthly rankings; older entries are deleted automatically).</li>
+    <li>"LYKO Coins" balance (shared across Servers), purchases, inventory (owned and equipped backgrounds), and the redeem codes you have used.</li>
+    <li>Top.gg voting data: your total number of votes and the time of your last vote, received from Top.gg's vote notifications, used to show your vote cooldown and reward your vote.</li>
+    <li>Counting-game statistics, per Server: the current count, record, and number of failures, plus who sent the last number, who broke the count, who used a "save", and which users are temporarily banned from the game.</li>
+    <li>Temporary voice channels: who owns each channel, its privacy and chat settings, and its lists of trusted and blocked users.</li>
   </ul>
 
   <h3>Lykosaris Premium</h3>
   <ul>
-    <li>Whether you have an active Lykosaris Premium subscription, and when it expires or renews. This status is provided to us automatically by Discord when a subscription is created, renewed, or cancelled.</li>
+    <li>Whether you have an active Lykosaris Premium subscription, its tier, and when it started and expires or renews. This status is provided to us automatically by Discord when a subscription is created, renewed, or cancelled; it can also be granted manually by us (for example, as a gift). When you subscribe, we may send you a direct message to thank you.</li>
     <li><strong>We never see or store your payment details</strong> (card number, bank details, billing address, etc.). All payment processing is handled directly between you, Discord, and Discord's payment provider — we only receive the subscription status itself.</li>
   </ul>
 
   <h3>Moderation records</h3>
   <ul>
     <li>Warnings issued to you by server staff (reason, date, issuing moderator), visible to that server's moderators.</li>
+    <li>Kicks, bans, and timeouts issued with the Bot's moderation commands (type, reason, date, and issuing moderator), and, for temporary bans, the time at which the ban ends.</li>
     <li>Aggregate moderation action counts (e.g. how many kicks/bans a moderator has issued), used for staff statistics only.</li>
+    <li>Actions taken by the Bot's automatic safety tools (see section 2) are reported in the Server's configured log channels.</li>
   </ul>
 
   <h3>Server configuration</h3>
   <ul>
-    <li>Settings configured by server administrators (channel IDs, role IDs, custom messages, feature toggles). This is configuration data about the Server, not about individual members.</li>
+    <li>Settings configured by server administrators (channel IDs, role IDs, custom messages and embeds, welcome and goodbye messages, autoresponders, word lists, feature toggles, and the accounts a Server follows for social media notifications). This is configuration data about the Server, not about individual members.</li>
+    <li>When the Bot is removed from a Server, we record that Server's ID, name, member count, and the date of removal.</li>
+  </ul>
+
+  <h3>Operational logs</h3>
+  <ul>
+    <li>The Bot's hosting provider keeps technical logs of the Bot's operation (for example, error messages and the IDs involved in an event). Requests that reach the Bot over the internet, such as notifications from Top.gg or YouTube, may also be logged by the hosting provider with the sender's network information.</li>
   </ul>
 </section>
 
 <section>
-  <h2>2. What We Do <em>Not</em> Collect</h2>
+  <h2>2. How the Bot Processes Messages and Members</h2>
+  <p>To work, the Bot receives message and member events from Discord. Message content is processed in real time to check whether it matters to an active feature and, <strong>unless a feature below says otherwise, it is not saved</strong>. Only the result is stored (for example, XP gained or the next number in a counting game).</p>
   <ul>
-    <li>We do not read, log, or store the content of your regular messages. The Bot only processes a message's content in real time to check whether it's relevant to an active feature (e.g. a counting-game number, a landmine trigger) — anything not relevant is ignored and never saved.</li>
-    <li>We do not track your activity outside of the specific commands/features you use.</li>
-    <li>We do not sell, rent, or share your data with advertisers or data brokers.</li>
+    <li><strong>Message-based features</strong> such as leveling, the counting game, landmines, autoresponders, AFK notices, sticky messages, and the honeypot check messages as they arrive to decide whether to act.</li>
+    <li><strong>Edited and deleted message log (optional).</strong> If a server administrator enables it, the Bot posts the text of messages that members edit or delete (their author, content before and after, channel, and any attachments, which the Bot downloads and uploads again) to the log channel that the administrator chose, so staff can see what was said. This log lives in that Server's Discord channel and is visible to whoever has access to it; it is not saved in the Bot's database. Logging may be incomplete for messages the Bot could not see.</li>
+    <li><strong>Anti-raid.</strong> If enabled by an administrator, the Bot briefly keeps in memory (about one minute, never in the database) how many invite links and images each user has posted, and may delete those messages and time out, kick, or ban the user according to the Server's settings.</li>
+    <li><strong>Bot scanner.</strong> If enabled, when someone joins, the Bot may check publicly visible account information (how recently the account was created, whether it has a profile picture, public badges, and the Server tag) and flag suspicious accounts to staff with the option to kick or ban them. This information is not stored.</li>
+    <li><strong>Server tag role.</strong> If configured, the Bot checks whether a member shows the Server's tag on their profile in order to give or remove a role. This is not stored.</li>
+    <li><strong>Forbidden words.</strong> The word lists configured by administrators are enforced by Discord's own AutoMod through rules the Bot creates; the Bot does not scan messages for them itself.</li>
+    <li><strong>Media tools.</strong> Images you submit to commands like <code>/media imagetogif</code> are downloaded temporarily to be converted and are not stored.</li>
   </ul>
+  <p>We do not read, log, or store the content of your regular messages beyond what is described above. We do not track your activity outside of the specific commands and features you use, and we do not sell, rent, or share your data with advertisers or data brokers.</p>
 </section>
 
 <section>
   <h2>3. How We Use Your Data</h2>
   <ul>
-    <li>To operate the features you or your server's staff choose to use (leveling, economy, tickets, moderation tools, games, etc).</li>
+    <li>To operate the features you or your server's staff choose to use (leveling, economy, tickets, moderation tools, games, notifications, etc).</li>
     <li>To keep server-specific statistics (e.g. member/bot counters, rankings) up to date.</li>
-    <li>To prevent abuse of the Bot (e.g. anti-raid detection, cooldowns).</li>
+    <li>To provide Lykosaris Premium and handle related support requests.</li>
+    <li>To prevent abuse of the Bot (e.g. anti-raid detection, cooldowns, limits on rewards and redeem codes).</li>
   </ul>
 </section>
 
 <section>
-  <h2>4. Where Your Data Is Stored</h2>
-  <p>Data is stored in a MongoDB database and processed by the Bot's application code, hosted on a third-party cloud provider (Render). These providers may process data on our behalf but do not use it for their own purposes. No data is knowingly transferred to any other third party except as described in this policy.</p>
+  <h2>4. Where Your Data Is Stored and Third Parties</h2>
+  <p>Data is stored in a MongoDB database and processed by the Bot's application code, hosted on a third-party cloud provider (Render). These providers process data on our behalf under their own terms and privacy policies.</p>
+  <p>The Bot also connects to the following services. Except where noted, only public identifiers (such as a channel name or an app ID chosen by a server administrator) are sent, not personal data about members:</p>
+  <ul>
+    <li><strong>Discord</strong> — the platform the Bot runs on.</li>
+    <li><strong>Top.gg</strong> — the Bot reports its total server count and receives vote notifications (including the voter's user ID).</li>
+    <li><strong>YouTube / Google, Twitch, Steam, and TikTok</strong> — used for social media notifications, by looking up the public channels, usernames, or games that a Server's administrators asked to follow.</li>
+    <li><strong>GitHub</strong> — the Bot downloads public emoji image files from it to draw images (such as profile and ranking cards). No personal data is sent.</li>
+    <li><strong>A game server statistics service</strong> — used only to show a player counter in a Server's statistics channel. No personal data is sent.</li>
+    <li><strong>Ko-fi</strong> — the <code>/donate</code> command only shows a link. Donations are handled entirely by Ko-fi, and the Bot does not receive any payment details.</li>
+  </ul>
+  <p>No data is knowingly transferred to any other third party except as described in this policy.</p>
 </section>
 
 <section>
   <h2>5. Data Retention</h2>
   <ul>
     <li>Data tied to a Server (settings, levels, tickets, etc.) is generally retained for as long as the Bot remains in that Server.</li>
-    <li>If the Bot is removed from a Server, its server-specific data may be deleted automatically or upon request.</li>
-    <li>Global data tied to your Discord account (e.g. LYKO Coins) persists across servers for as long as your account has interacted with the Bot, unless deletion is requested.</li>
+    <li>Server-specific data is <strong>not currently deleted automatically</strong> when the Bot is removed from a Server; it can be deleted on request (see section 6).</li>
+    <li>Global data tied to your Discord account (e.g. LYKO Coins, your birthday, your language preference, and vote counts) persists across servers for as long as your account has interacted with the Bot, unless deletion is requested.</li>
+    <li>XP history is limited to the last 90 days.</li>
+    <li>Content that server staff or the Bot post in a Server's channels (such as ticket transcripts and message logs) is kept in Discord according to that Server's own settings and is not controlled by us.</li>
   </ul>
 </section>
 
@@ -191,8 +310,10 @@
     <li><strong>Access</strong> — a summary of the data we hold about you.</li>
     <li><strong>Deletion</strong> — removal of your personal data from our database.</li>
     <li><strong>Correction</strong> — fixing inaccurate data (where applicable).</li>
+    <li><strong>Objection or restriction</strong> — asking us to stop or limit how we use your data, where the law gives you that right.</li>
   </ul>
-  <p>To exercise any of these rights, contact us using the details in section 9. We may need to verify your Discord identity before processing a request.</p>
+  <p>To exercise any of these rights, contact us using the details in section 10. We may need to verify your Discord identity before processing a request, and we will reply within a reasonable time.</p>
+  <p>Please note that some data is controlled by the Server's staff rather than by us (for example, ticket transcripts, message logs, and warnings visible to moderators). We can delete what is in the Bot's database, but you may also need to ask that Server's staff to remove content they hold in Discord. If you are in the European Economic Area or the United Kingdom, you can also contact your local data protection authority.</p>
 </section>
 
 <section>
@@ -201,19 +322,182 @@
 </section>
 
 <section>
-  <h2>8. Changes to This Policy</h2>
+  <h2>8. Security</h2>
+  <p>We take reasonable measures to protect the data we hold and limit access to what is necessary to run the Bot. However, no online service can be guaranteed to be completely secure.</p>
+</section>
+
+<section>
+  <h2>9. Changes to This Policy</h2>
   <p>We may update this Privacy Policy from time to time. Material changes will be reflected by updating the "Last updated" date at the top of this page. Continued use of the Bot after changes means you accept the revised policy.</p>
 </section>
 
 <section>
-  <h2>9. Contact</h2>
+  <h2>10. Contact</h2>
   <p>For any privacy questions, data requests, or concerns, reach out via:</p>
   <ul>
-        <li>Discord: <code>xxmondoxx_115</code></li>
+    <li>Discord: <code>xxmondoxx_115</code></li>
     <li>Bot support server: <em>https://discord.gg/mAyPdt2ZtY</em></li>
   </ul>
 </section>
 
 </main>
+
+<main data-lang="es" lang="es">
+<section>
+  <p>Esta Política de privacidad explica qué datos recopila el bot de Discord <strong>Lykosaris</strong> ("el Bot", "nosotros"), para qué los usa y cómo los trata cuando usas el Bot en un servidor de Discord ("Servidor") o interactúas directamente con él. Se aplica solo al Bot; cómo trata Discord tus datos se explica en la <a href="https://discord.com/privacy" target="_blank" rel="noopener">Política de privacidad de Discord</a>.</p>
+  <p>Al usar Lykosaris, aceptas la recopilación y el uso de la información tal y como se describe aquí. Si no estás de acuerdo, deja de usar el Bot y pide a un administrador del servidor que lo quite.</p>
+</section>
+
+<section>
+  <h2>1. Información que recopilamos</h2>
+  <p>Solo recopilamos los datos necesarios para que funcionen las funciones del Bot, y únicamente de las funciones que tú o el personal de tu servidor usan realmente. Se limita a:</p>
+
+  <h3>Identificadores</h3>
+  <ul>
+    <li>Tu ID de usuario de Discord y, cuando corresponde, los ID del Servidor (guild), de canales, roles, mensajes e hilos en los que se configuró o usó una función.</li>
+    <li>Algunas funciones también guardan un nombre tal y como aparecía en ese momento (por ejemplo, las conversaciones de <code>/contactstaff</code> guardan el nombre de usuario de cada participante y el nombre del Servidor).</li>
+    <li><strong>No</strong> recopilamos tu correo electrónico, dirección IP, número de teléfono ni nombre real: los ID de Discord son los únicos identificadores que usamos.</li>
+  </ul>
+
+  <h3>Contenido que aportas a funciones concretas</h3>
+  <p>Algunas funciones requieren que tú (o el personal del servidor) envíes texto o imágenes, que se guardan solo para que esa función funcione:</p>
+  <ul>
+    <li><span class="badge">/profile</span> Tu texto "About Me" (sobre mí) de hasta 200 caracteres, colores, fondos equipados, ajustes de las cajas semitransparentes y, si tienes Lykosaris Premium, tus elecciones de marco, texto de la cinta y formato de la tarjeta.</li>
+    <li><span class="badge">Tickets</span> El motivo y las respuestas que das a las preguntas del formulario de un ticket, su prioridad y quién lo reclamó. Al cerrar un ticket, se genera una transcripción de sus mensajes y se envía como archivo de texto al canal de registros del Servidor (si hay uno configurado). Esa transcripción la conserva el Servidor en Discord; no se guarda en la base de datos del Bot.</li>
+    <li><span class="badge">/contactstaff</span> Los mensajes intercambiados entre tú y el personal del servidor a través de esa función (texto, nombre e ID del autor y fecha). Estos mensajes también se envían como mensajes directos a ti y a los miembros del personal con el rol (o roles) configurado.</li>
+    <li><span class="badge">Trades y tienda</span> El título, la descripción, los términos y el enlace opcional a una imagen de los anuncios de trade que creas, quién los reclamó, su estado y los "me gusta" y "no me gusta" dejados como reputación de trade; y los nombres, descripciones, texto de precio y stock de los anuncios de tienda.</li>
+    <li><span class="badge">Equipos</span> El nombre, la etiqueta, la descripción, el emoji, el líder, los administradores, los miembros y las solicitudes de ingreso de un equipo (quién pidió unirse y si se aceptó, rechazó o canceló).</li>
+    <li><span class="badge">Sorteos</span> Los ID de usuario de las personas que participaron en un sorteo y de sus ganadores.</li>
+    <li><span class="badge">/afk</span> Tu estado AFK en cada Servidor y el mensaje opcional que le pongas.</li>
+    <li><span class="badge">Cumpleaños</span> El día y el mes de tu cumpleaños (sin año), si decides indicarlo. Se guarda una sola vez y se aplica a todos los Servidores en los que coincidan tú y el Bot. Los Servidores que tengan un canal de cumpleaños configurado pueden anunciar tu cumpleaños allí, a la vista de los miembros de ese canal.</li>
+    <li><span class="badge">Idioma</span> Tu preferencia personal de idioma, si la estableces.</li>
+    <li><span class="badge">Juego de quiz</span> Las preguntas y respuestas del quiz creadas por el personal. Los quizzes usan las encuestas nativas de Discord; solo leemos el total de votos de la respuesta correcta cuando termina una encuesta, nunca quién votó qué.</li>
+  </ul>
+
+  <h3>Datos de actividad y progreso</h3>
+  <ul>
+    <li>Nivel, XP y progreso de prestigio de cada Servidor, la hora de tu último mensaje que dio XP (se usa para el tiempo de espera entre ganancias de XP) y un historial de XP de los últimos 90 días (se usa para los rankings semanales y mensuales; las entradas más antiguas se borran automáticamente).</li>
+    <li>Saldo de "LYKO Coins" (compartido entre Servidores), compras, inventario (fondos poseídos y equipados) y los códigos de canje que has usado.</li>
+    <li>Datos de votos en Top.gg: tu número total de votos y la hora de tu último voto, recibidos de las notificaciones de voto de Top.gg, que se usan para mostrar tu tiempo de espera para volver a votar y recompensar tu voto.</li>
+    <li>Estadísticas del juego de contar, por Servidor: la cuenta actual, el récord y el número de fallos, además de quién envió el último número, quién rompió la cuenta, quién usó un "guardado" y qué usuarios están vetados temporalmente del juego.</li>
+    <li>Canales de voz temporales: quién es el dueño de cada canal, sus ajustes de privacidad y de chat, y sus listas de usuarios de confianza y bloqueados.</li>
+  </ul>
+
+  <h3>Lykosaris Premium</h3>
+  <ul>
+    <li>Si tienes una suscripción activa a Lykosaris Premium, su nivel y cuándo empezó y cuándo caduca o se renueva. Discord nos proporciona este estado automáticamente cuando se crea, renueva o cancela una suscripción; también podemos concederlo manualmente (por ejemplo, como regalo). Al suscribirte, podemos enviarte un mensaje directo para darte las gracias.</li>
+    <li><strong>Nunca vemos ni guardamos tus datos de pago</strong> (número de tarjeta, datos bancarios, dirección de facturación, etc.). Todo el procesamiento de pagos se realiza directamente entre tú, Discord y el proveedor de pagos de Discord: solo recibimos el estado de la suscripción.</li>
+  </ul>
+
+  <h3>Registros de moderación</h3>
+  <ul>
+    <li>Avisos que te ha puesto el personal del servidor (motivo, fecha y moderador que lo emitió), visibles para los moderadores de ese servidor.</li>
+    <li>Expulsiones, baneos y aislamientos (timeouts) emitidos con los comandos de moderación del Bot (tipo, motivo, fecha y moderador) y, en los baneos temporales, el momento en que termina el baneo.</li>
+    <li>Recuentos agregados de acciones de moderación (p. ej., cuántas expulsiones o baneos ha emitido un moderador), usados solo para estadísticas del personal.</li>
+    <li>Las acciones de las herramientas de seguridad automáticas del Bot (ver sección 2) se informan en los canales de registros configurados del Servidor.</li>
+  </ul>
+
+  <h3>Configuración del servidor</h3>
+  <ul>
+    <li>Ajustes configurados por los administradores del servidor (ID de canales y roles, mensajes y embeds personalizados, mensajes de bienvenida y despedida, autorrespuestas, listas de palabras, interruptores de funciones y las cuentas que un Servidor sigue para las notificaciones de redes sociales). Son datos de configuración del Servidor, no de miembros individuales.</li>
+    <li>Cuando el Bot sale de un Servidor, registramos el ID, el nombre y el número de miembros de ese Servidor, y la fecha de salida.</li>
+  </ul>
+
+  <h3>Registros operativos</h3>
+  <ul>
+    <li>El proveedor de alojamiento del Bot guarda registros técnicos del funcionamiento del Bot (por ejemplo, mensajes de error y los ID implicados en un evento). Las peticiones que llegan al Bot por internet, como las notificaciones de Top.gg o YouTube, también pueden ser registradas por el proveedor de alojamiento junto con la información de red del remitente.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>2. Cómo procesa el Bot los mensajes y los miembros</h2>
+  <p>Para funcionar, el Bot recibe de Discord eventos de mensajes y de miembros. El contenido de los mensajes se procesa en tiempo real para comprobar si importa a alguna función activa y, <strong>salvo que una de las funciones siguientes diga lo contrario, no se guarda</strong>. Solo se almacena el resultado (por ejemplo, la XP ganada o el siguiente número de un juego de contar).</p>
+  <ul>
+    <li><strong>Funciones basadas en mensajes</strong>, como los niveles, el juego de contar, las minas, las autorrespuestas, los avisos de AFK, los mensajes fijos (sticky) y el honeypot, revisan los mensajes según llegan para decidir si actuar.</li>
+    <li><strong>Registro de mensajes editados y borrados (opcional).</strong> Si un administrador del servidor lo activa, el Bot publica el texto de los mensajes que los miembros editan o borran (su autor, el contenido antes y después, el canal y los adjuntos, que el Bot descarga y vuelve a subir) en el canal de registros que eligió el administrador, para que el personal pueda ver qué se dijo. Este registro vive en el canal de Discord de ese Servidor y es visible para quien tenga acceso a él; no se guarda en la base de datos del Bot. El registro puede ser incompleto en los mensajes que el Bot no pudo ver.</li>
+    <li><strong>Antiraid.</strong> Si lo activa un administrador, el Bot guarda brevemente en memoria (alrededor de un minuto, nunca en la base de datos) cuántos enlaces de invitación e imágenes ha publicado cada usuario, y puede borrar esos mensajes y aislar (timeout), expulsar o banear al usuario según los ajustes del Servidor.</li>
+    <li><strong>Bot scanner.</strong> Si está activado, cuando alguien se une, el Bot puede comprobar información pública de la cuenta (hace cuánto se creó, si tiene foto de perfil, insignias públicas y el tag del Servidor) y señalar cuentas sospechosas al personal, con la opción de expulsarlas o banearlas. Esta información no se guarda.</li>
+    <li><strong>Rol de server tag.</strong> Si está configurado, el Bot comprueba si un miembro muestra el tag del Servidor en su perfil para darle o quitarle un rol. Esto no se guarda.</li>
+    <li><strong>Palabras prohibidas.</strong> Las listas de palabras configuradas por los administradores las aplica el AutoMod de Discord mediante reglas que crea el Bot; el Bot no analiza los mensajes por su cuenta para esto.</li>
+    <li><strong>Herramientas multimedia.</strong> Las imágenes que envías a comandos como <code>/media imagetogif</code> se descargan temporalmente para convertirlas y no se guardan.</li>
+  </ul>
+  <p>No leemos, registramos ni guardamos el contenido de tus mensajes normales más allá de lo descrito arriba. No rastreamos tu actividad fuera de los comandos y funciones concretos que uses, y no vendemos, alquilamos ni compartimos tus datos con anunciantes ni intermediarios de datos.</p>
+</section>
+
+<section>
+  <h2>3. Cómo usamos tus datos</h2>
+  <ul>
+    <li>Para hacer funcionar las funciones que tú o el personal de tu servidor elijan usar (niveles, economía, tickets, herramientas de moderación, juegos, notificaciones, etc.).</li>
+    <li>Para mantener al día las estadísticas de cada servidor (p. ej., contadores de miembros y bots, rankings).</li>
+    <li>Para ofrecer Lykosaris Premium y atender las solicitudes de soporte relacionadas.</li>
+    <li>Para prevenir abusos del Bot (p. ej., detección de raids, tiempos de espera, límites en recompensas y códigos de canje).</li>
+  </ul>
+</section>
+
+<section>
+  <h2>4. Dónde se guardan tus datos y terceros</h2>
+  <p>Los datos se guardan en una base de datos MongoDB y los procesa el código de la aplicación del Bot, alojado en un proveedor de nube de terceros (Render). Estos proveedores tratan los datos en nuestro nombre conforme a sus propios términos y políticas de privacidad.</p>
+  <p>El Bot también se conecta a los siguientes servicios. Salvo que se indique lo contrario, solo se envían identificadores públicos (como el nombre de un canal o un ID de aplicación elegido por un administrador del servidor), no datos personales de los miembros:</p>
+  <ul>
+    <li><strong>Discord</strong>: la plataforma en la que funciona el Bot.</li>
+    <li><strong>Top.gg</strong>: el Bot informa de su número total de servidores y recibe notificaciones de voto (incluido el ID de usuario de quien vota).</li>
+    <li><strong>YouTube / Google, Twitch, Steam y TikTok</strong>: se usan para las notificaciones de redes sociales, consultando los canales, usuarios o juegos públicos que los administradores de un Servidor pidieron seguir.</li>
+    <li><strong>GitHub</strong>: el Bot descarga de allí archivos públicos de imágenes de emojis para dibujar imágenes (como las tarjetas de perfil y de ranking). No se envían datos personales.</li>
+    <li><strong>Un servicio de estadísticas de un servidor de juego</strong>: se usa solo para mostrar un contador de jugadores en el canal de estadísticas de un Servidor. No se envían datos personales.</li>
+    <li><strong>Ko-fi</strong>: el comando <code>/donate</code> solo muestra un enlace. Las donaciones las gestiona íntegramente Ko-fi, y el Bot no recibe ningún dato de pago.</li>
+  </ul>
+  <p>No se transfieren conscientemente datos a ningún otro tercero salvo lo descrito en esta política.</p>
+</section>
+
+<section>
+  <h2>5. Conservación de los datos</h2>
+  <ul>
+    <li>Los datos vinculados a un Servidor (ajustes, niveles, tickets, etc.) se conservan, por lo general, mientras el Bot siga en ese Servidor.</li>
+    <li>Los datos específicos de un Servidor <strong>no se borran automáticamente por ahora</strong> cuando se quita el Bot de él; se pueden borrar a petición (ver sección 6).</li>
+    <li>Los datos globales vinculados a tu cuenta de Discord (p. ej., LYKO Coins, tu cumpleaños, tu preferencia de idioma y el número de votos) persisten entre servidores mientras tu cuenta haya interactuado con el Bot, salvo que se solicite su borrado.</li>
+    <li>El historial de XP se limita a los últimos 90 días.</li>
+    <li>El contenido que el personal del servidor o el Bot publican en los canales de un Servidor (como las transcripciones de tickets y los registros de mensajes) se conserva en Discord según los ajustes de ese Servidor y no lo controlamos nosotros.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>6. Tus derechos</h2>
+  <p>Puedes solicitar en cualquier momento:</p>
+  <ul>
+    <li><strong>Acceso</strong>: un resumen de los datos que tenemos sobre ti.</li>
+    <li><strong>Eliminación</strong>: que borremos tus datos personales de nuestra base de datos.</li>
+    <li><strong>Rectificación</strong>: que corrijamos datos inexactos (cuando proceda).</li>
+    <li><strong>Oposición o limitación</strong>: que dejemos de usar tus datos o limitemos su uso, cuando la ley te dé ese derecho.</li>
+  </ul>
+  <p>Para ejercer cualquiera de estos derechos, contáctanos con los datos de la sección 10. Puede que necesitemos verificar tu identidad en Discord antes de tramitar una solicitud, y responderemos en un plazo razonable.</p>
+  <p>Ten en cuenta que algunos datos los controla el personal del Servidor y no nosotros (por ejemplo, las transcripciones de tickets, los registros de mensajes y los avisos visibles para los moderadores). Nosotros podemos borrar lo que esté en la base de datos del Bot, pero quizá también tengas que pedir al personal de ese Servidor que elimine el contenido que conserva en Discord. Si te encuentras en el Espacio Económico Europeo o en el Reino Unido, también puedes dirigirte a tu autoridad local de protección de datos.</p>
+</section>
+
+<section>
+  <h2>7. Privacidad de los menores</h2>
+  <p>Discord exige que los usuarios tengan al menos 13 años (o la edad de consentimiento digital aplicable en su país). Lykosaris no recopila conscientemente datos de nadie por debajo de esa edad. Si crees que un menor nos ha proporcionado datos incumpliendo esta política, contáctanos para que los eliminemos.</p>
+</section>
+
+<section>
+  <h2>8. Seguridad</h2>
+  <p>Tomamos medidas razonables para proteger los datos que conservamos y limitamos el acceso a lo necesario para hacer funcionar el Bot. Sin embargo, no se puede garantizar que ningún servicio en línea sea completamente seguro.</p>
+</section>
+
+<section>
+  <h2>9. Cambios en esta política</h2>
+  <p>Podemos actualizar esta Política de privacidad de vez en cuando. Los cambios importantes se reflejarán actualizando la fecha de "Última actualización" en la parte superior de esta página. Seguir usando el Bot después de los cambios significa que aceptas la política revisada.</p>
+</section>
+
+<section>
+  <h2>10. Contacto</h2>
+  <p>Para cualquier pregunta sobre privacidad, solicitud de datos o duda, escríbenos por:</p>
+  <ul>
+    <li>Discord: <code>xxmondoxx_115</code></li>
+    <li>Servidor de soporte del Bot: <em>https://discord.gg/mAyPdt2ZtY</em></li>
+  </ul>
+</section>
+
+</main>
+
 </body>
 </html>

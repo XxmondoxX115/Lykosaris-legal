@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-title-en="Terms of Service — Lykosaris" data-title-es="Términos del servicio — Lykosaris">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -79,16 +79,101 @@
     color: var(--muted);
     font-size: 0.9rem;
   }
+
+  /* Language switch */
+  html[lang="en"] [data-lang="es"], html[lang="es"] [data-lang="en"] { display: none !important; }
+  .lang-switch {
+    display: inline-flex;
+    gap: 8px;
+    margin-top: 18px;
+  }
+  .lang-switch button {
+    font: inherit;
+    font-size: 0.9rem;
+    color: var(--text);
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 6px 16px;
+    cursor: pointer;
+  }
+  .lang-switch button:hover { border-color: var(--accent); }
+  .lang-switch button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .lang-switch button[aria-pressed="true"] {
+    color: var(--accent);
+    background: rgba(75, 255, 0, 0.12);
+    border-color: var(--accent);
+  }
 </style>
+<script>
+(function () {
+  var SUPPORTED = ['en', 'es'];
+  var KEY = 'lykosaris-lang';
+  var root = document.documentElement;
+
+  function fromUrl() {
+    try {
+      var p = new URLSearchParams(window.location.search).get('lang');
+      return SUPPORTED.indexOf(p) > -1 ? p : null;
+    } catch (e) { return null; }
+  }
+  function fromStorage() {
+    try {
+      var s = window.localStorage.getItem(KEY);
+      return SUPPORTED.indexOf(s) > -1 ? s : null;
+    } catch (e) { return null; }
+  }
+  function fromBrowser() {
+    var l = String(navigator.language || 'en').toLowerCase();
+    return l.indexOf('es') === 0 ? 'es' : 'en';
+  }
+
+  function apply(lang, persist) {
+    root.setAttribute('lang', lang);
+    var title = root.getAttribute('data-title-' + lang);
+    if (title) document.title = title;
+
+    var buttons = document.querySelectorAll('[data-set-lang]');
+    for (var i = 0; i < buttons.length; i++) {
+      buttons[i].setAttribute('aria-pressed', buttons[i].getAttribute('data-set-lang') === lang ? 'true' : 'false');
+    }
+    // Los enlaces entre documentos conservan el idioma elegido.
+    var links = document.querySelectorAll('a[data-internal]');
+    for (var j = 0; j < links.length; j++) {
+      links[j].setAttribute('href', links[j].getAttribute('data-internal') + '?lang=' + lang);
+    }
+    if (persist) {
+      try { window.localStorage.setItem(KEY, lang); } catch (e) {}
+      try { window.history.replaceState(null, '', '?lang=' + lang + window.location.hash); } catch (e) {}
+    }
+  }
+
+  var initial = fromUrl() || fromStorage() || fromBrowser();
+  apply(initial, false);
+  document.addEventListener('DOMContentLoaded', function () { apply(root.getAttribute('lang') || initial, false); });
+
+  document.addEventListener('click', function (event) {
+    var target = event.target;
+    while (target && target !== document && !(target.getAttribute && target.getAttribute('data-set-lang'))) target = target.parentNode;
+    if (target && target.getAttribute && target.getAttribute('data-set-lang')) apply(target.getAttribute('data-set-lang'), true);
+  });
+})();
+</script>
+<noscript><style>html[lang] [data-lang][data-lang] { display: revert !important; } .lang-switch { display: none; }</style></noscript>
+
 </head>
 <body>
 
 <header>
-  <h1>🐺 Lykosaris — Terms of Service</h1>
-  <p class="muted">Last updated: July 21, 2026</p>
+  <h1><span data-lang="en">🐺 Lykosaris — Terms of Service</span><span data-lang="es" lang="es">🐺 Lykosaris — Términos del servicio</span></h1>
+  <p class="muted"><span data-lang="en">Last updated: October 4, 2026</span><span data-lang="es" lang="es">Última actualización: 4 de octubre de 2026</span></p>
+  <div class="lang-switch" role="group" aria-label="Language / Idioma">
+    <button type="button" data-set-lang="en" aria-pressed="true">English</button>
+    <button type="button" data-set-lang="es" aria-pressed="false">Español</button>
+  </div>
 </header>
 
-<main>
+<main data-lang="en">
 
 <section>
   <p>These Terms of Service ("Terms") govern your access to and use of the Discord bot <strong>Lykosaris</strong> ("the Bot", "we", "us"). By adding the Bot to a Discord server, or by using its commands and features, you agree to these Terms. If you do not agree, do not use the Bot.</p>
@@ -101,7 +186,7 @@
 
 <section>
   <h2>2. Description of the Service</h2>
-  <p>Lykosaris provides a range of optional features for Discord servers, including but not limited to: moderation tools, a leveling and virtual-currency economy, tickets, giveaways, minigames (landmines, counting, quiz), embed/menu builders, and social media notifications. Server staff choose which features to enable and how to configure them; the Bot only acts according to that configuration.</p>
+  <p>Lykosaris provides a range of optional features for Discord servers, including but not limited to: moderation and safety tools (moderation commands, warnings, anti-raid, honeypot, a bot scanner, forbidden-word lists, and edited/deleted message logs), a leveling system with rankings and profile cards, a virtual-currency economy with backgrounds and redeem codes, tickets and a "contact staff" feature, giveaways, minigames (landmines, counting, quiz), teams, temporary voice channels, trading and store listings, birthdays, AFK status, autoresponders, welcome and goodbye messages, sticky messages, embed and menu builders, statistics channels, and social media notifications (YouTube, Twitch, TikTok, and Steam). Server staff choose which features to enable and how to configure them; the Bot only acts according to that configuration.</p>
 </section>
 
 <section>
@@ -109,6 +194,7 @@
   <p>When using Lykosaris, you agree not to:</p>
   <ul>
     <li>Attempt to exploit, reverse-engineer, or abuse bugs in the Bot to gain an unfair advantage (e.g. duplicating LYKO Coins, bypassing cooldowns, manipulating quiz or counting-game results).</li>
+    <li>Abuse redeem codes, vote rewards, giveaways, or Premium-only features (for example, by using alternate accounts or automation) to obtain rewards unfairly.</li>
     <li>Use the Bot to harass, spam, or abuse other users, including through features intended for moderation or games (e.g. deliberately misusing the honeypot, anti-raid, or moderation tools against legitimate members).</li>
     <li>Use the Bot for any purpose that violates Discord's Terms of Service, Community Guidelines, or applicable law.</li>
     <li>Attempt to overload, disrupt, or gain unauthorized access to the Bot, its host infrastructure, or its database.</li>
@@ -119,7 +205,7 @@
 <section>
   <h2>4. Virtual Currency &amp; Items</h2>
   <ul>
-    <li>"LYKO Coins", backgrounds, redeem codes, and any other in-Bot virtual currency or item have <strong>no real-world monetary value</strong>, cannot be exchanged for real money, and are not transferable outside of the Bot's own features.</li>
+    <li>"LYKO Coins", backgrounds, redeem codes, and any other in-Bot virtual currency or item have <strong>no real-world monetary value</strong>, cannot be exchanged for real money, and are not transferable outside of the Bot's own features. They can be earned through the Bot's features (for example, vote rewards or redeem codes).</li>
     <li>Balances and inventories are provided "as is" and may be reset, adjusted, or removed at our discretion — for example, to fix a bug, prevent abuse, or if a server removes the Bot.</li>
     <li>We do not guarantee the permanent availability of any virtual item or balance.</li>
   </ul>
@@ -129,51 +215,184 @@
   <h2>5. Lykosaris Premium</h2>
   <ul>
     <li>Lykosaris Premium is an optional, recurring subscription purchased and managed entirely through Discord's own payment system (Discord Monetization / Premium Apps, processed via Discord's payment provider). We do not process or handle your payment information directly.</li>
-    <li>At this time, Lykosaris Premium exists primarily to <strong>support the development of the Bot</strong> and does not grant any specific in-Bot benefit. We reserve the right to <strong>add</strong> benefits to Lykosaris Premium in the future (for example, exclusive backgrounds, LYKO Coins, or other perks) at our discretion, without this constituting a removal or reduction of what current subscribers already have.</li>
+    <li>Lykosaris Premium supports the development of the Bot and currently includes: customization of your <code>/profile</code> card (a colored frame, in a solid, sides, or corners layout, and a diagonal ribbon with text of your choice), the option to receive your profile card as an animated GIF, and the ability to save the count in the Counting Game after it is broken (in servers where that game is enabled).</li>
+    <li>We may add, change, or adjust Premium benefits over time (for example, adding exclusive backgrounds, LYKO Coins, or other perks) at our discretion. Premium status may also be granted manually by us, for example as a gift or as compensation.</li>
+    <li>Premium-only features are available only while your Premium status is active. Your saved choices may be kept, but they will not apply while Premium is inactive.</li>
     <li>Your subscription is managed through Discord (including cancellation, renewal, and billing) — see Discord's own Monetization Terms for how payments, refunds, and billing cycles work.</li>
     <li>If you believe your Lykosaris Premium subscription was not granted, applied, or reflected correctly in the Bot (for example, a benefit not showing up after purchase), you have the right to contact the Bot's creator ("Mondo") directly so the issue can be looked into and resolved together.</li>
   </ul>
 </section>
 
 <section>
-  <h2>6. User-Generated Content</h2>
-  <p>Some features let you or server staff submit content (ticket messages, autoresponders, embeds, quiz questions, trade listings, profile "About Me" text, etc.). You are solely responsible for any content you submit through the Bot. We reserve the right, but not the obligation, to remove content that violates these Terms, Discord's rules, or applicable law.</p>
+  <h2>6. Donations</h2>
+  <p>The <code>/donate</code> command links to Ko-fi, where you can voluntarily support the Bot. Donations are optional, are handled entirely by Ko-fi under its own terms, and do not grant any in-Bot benefit. We do not receive your payment details through the Bot.</p>
 </section>
 
 <section>
-  <h2>7. Server Administrator Responsibilities</h2>
-  <p>Administrators who configure the Bot in their server are responsible for how its features are set up and used within that server, including moderation actions taken with the Bot's tools, and any messages, embeds, or automated content they configure.</p>
+  <h2>7. User-Generated Content</h2>
+  <p>Some features let you or server staff submit content (ticket messages, autoresponders, embeds, quiz questions, trade and store listings, team descriptions, profile "About Me" text, etc.). You are solely responsible for any content you submit through the Bot. We reserve the right, but not the obligation, to remove content that violates these Terms, Discord's rules, or applicable law.</p>
 </section>
 
 <section>
-  <h2>8. Availability &amp; Changes</h2>
+  <h2>8. Trading, Store &amp; Interactions Between Users</h2>
+  <p>The trading, store, and team features let users publish listings and contact each other. The Bot does not verify, hold, or guarantee any item, price, or agreement, and is not a party to any trade. Any deal is between the users involved and at their own risk. Reputation (likes and dislikes) is left by users and is not verified by us. Listings must follow Discord's rules and the rules of the server where they are published.</p>
+</section>
+
+<section>
+  <h2>9. Server Administrator Responsibilities</h2>
+  <p>Administrators who configure the Bot in their server are responsible for how its features are set up and used within that server, including:</p>
+  <ul>
+    <li>Moderation actions taken with the Bot's tools, and the settings of automatic tools such as anti-raid, the honeypot, the bot scanner, autoresponders, and forbidden-word lists. These tools act according to the rules the server's staff set; decisions to warn, kick, ban, or time out a member are theirs, not ours. If you disagree with such a decision, please contact that server's staff.</li>
+    <li>Turning on features that handle members' content, such as the edited/deleted message log and ticket transcripts, and informing their members about them where required by law or by Discord's rules.</li>
+    <li>Any messages, embeds, or automated content they configure.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>10. Third-Party Services</h2>
+  <p>Some features depend on services we do not control, such as Discord, Top.gg, and the platforms used for social media notifications (YouTube, Twitch, TikTok, and Steam). Their data may be delayed, incomplete, or unavailable, and we do not guarantee the timeliness or accuracy of notifications. We do not control or endorse the content of those platforms, which belongs to its respective owners.</p>
+</section>
+
+<section>
+  <h2>11. Availability &amp; Changes</h2>
   <p>The Bot is provided on an "as is" and "as available" basis. We do not guarantee uninterrupted or error-free operation, and features may be added, changed, or removed at any time without prior notice. We may also update these Terms from time to time; continued use of the Bot after changes means you accept the revised Terms. Material changes will be reflected by updating the "Last updated" date above.</p>
 </section>
 
 <section>
-  <h2>9. Termination</h2>
+  <h2>12. Termination</h2>
   <p>We may suspend or restrict access to the Bot, for a specific user or an entire server, at any time and without prior notice, particularly in cases of abuse, exploitation, or violation of these Terms. Server staff may also remove the Bot from their server at any time.</p>
 </section>
 
 <section>
-  <h2>10. Disclaimer &amp; Limitation of Liability</h2>
-  <p>The Bot is provided free of charge, without warranties of any kind, express or implied. To the fullest extent permitted by law, we are not liable for any indirect, incidental, or consequential damages arising from your use of, or inability to use, the Bot — including loss of virtual currency, items, data, or server configuration.</p>
+  <h2>13. Disclaimer &amp; Limitation of Liability</h2>
+  <p>The Bot is provided without warranties of any kind, express or implied. To the fullest extent permitted by law, we are not liable for any indirect, incidental, or consequential damages arising from your use of, or inability to use, the Bot — including loss of virtual currency, items, data, or server configuration.</p>
 </section>
 
 <section>
-  <h2>11. Privacy</h2>
-  <p>Our use of your data is described separately in our <a href="privacy.html">Privacy Policy</a>, which forms part of these Terms.</p>
+  <h2>14. Privacy</h2>
+  <p>Our use of your data is described separately in our <a href="privacy.html" data-internal="privacy.html">Privacy Policy</a>, which forms part of these Terms.</p>
 </section>
 
 <section>
-  <h2>12. Contact</h2>
+  <h2>15. Contact</h2>
   <p>Questions about these Terms can be sent to:</p>
   <ul>
-       <li>Discord: <code>xxmondoxx_115</code></li>
+    <li>Discord: <code>xxmondoxx_115</code></li>
     <li>Bot support server: <em>https://discord.gg/mAyPdt2ZtY</em></li>
   </ul>
 </section>
 
 </main>
+
+<main data-lang="es" lang="es">
+<section>
+  <p>Estos Términos del servicio ("Términos") regulan tu acceso y uso del bot de Discord <strong>Lykosaris</strong> ("el Bot", "nosotros"). Al añadir el Bot a un servidor de Discord, o al usar sus comandos y funciones, aceptas estos Términos. Si no estás de acuerdo, no uses el Bot.</p>
+</section>
+
+<section>
+  <h2>1. Requisitos</h2>
+  <p>Debes cumplir el requisito de edad mínima de Discord (13 años, o más donde lo exija la ley local) para usar el Bot, ya que Lykosaris funciona íntegramente dentro de Discord y está sujeto a los <a href="https://discord.com/terms" target="_blank" rel="noopener">Términos del servicio de Discord</a> y a sus <a href="https://discord.com/guidelines" target="_blank" rel="noopener">Normas de la comunidad</a>. Los administradores de servidores son responsables de que el uso del Bot en su servidor cumpla las normas de Discord.</p>
+</section>
+
+<section>
+  <h2>2. Descripción del servicio</h2>
+  <p>Lykosaris ofrece una serie de funciones opcionales para servidores de Discord, entre ellas, sin limitarse a: herramientas de moderación y seguridad (comandos de moderación, avisos, antiraid, honeypot, un bot scanner, listas de palabras prohibidas y registros de mensajes editados o borrados), un sistema de niveles con rankings y tarjetas de perfil, una economía de moneda virtual con fondos y códigos de canje, tickets y una función de "contactar con el staff", sorteos, minijuegos (minas, contar, quiz), equipos, canales de voz temporales, anuncios de trades y de tienda, cumpleaños, estado AFK, autorrespuestas, mensajes de bienvenida y despedida, mensajes fijos, creadores de embeds y menús, canales de estadísticas y notificaciones de redes sociales (YouTube, Twitch, TikTok y Steam). El personal del servidor elige qué funciones activar y cómo configurarlas; el Bot solo actúa según esa configuración.</p>
+</section>
+
+<section>
+  <h2>3. Uso aceptable</h2>
+  <p>Al usar Lykosaris, te comprometes a no:</p>
+  <ul>
+    <li>Intentar explotar, aplicar ingeniería inversa o abusar de errores del Bot para obtener una ventaja injusta (p. ej., duplicar LYKO Coins, saltarte tiempos de espera, manipular los resultados del quiz o del juego de contar).</li>
+    <li>Abusar de códigos de canje, recompensas de votos, sorteos o funciones exclusivas de Premium (por ejemplo, usando cuentas alternativas o automatización) para conseguir recompensas de forma injusta.</li>
+    <li>Usar el Bot para acosar, enviar spam o abusar de otros usuarios, incluso a través de funciones pensadas para moderación o juegos (p. ej., usar de forma deliberadamente indebida el honeypot, el antiraid o las herramientas de moderación contra miembros legítimos).</li>
+    <li>Usar el Bot para cualquier fin que infrinja los Términos del servicio de Discord, sus Normas de la comunidad o la ley aplicable.</li>
+    <li>Intentar sobrecargar, interrumpir u obtener acceso no autorizado al Bot, a su infraestructura de alojamiento o a su base de datos.</li>
+  </ul>
+  <p>Incumplir estos Términos puede llevar a que el dueño del Bot restrinja tu acceso a funciones concretas, y/o a que el personal del servidor afectado tome medidas contra ti según sus propias normas.</p>
+</section>
+
+<section>
+  <h2>4. Moneda virtual y objetos</h2>
+  <ul>
+    <li>Las "LYKO Coins", los fondos, los códigos de canje y cualquier otra moneda u objeto virtual del Bot <strong>no tienen valor monetario real</strong>, no se pueden cambiar por dinero real y no son transferibles fuera de las propias funciones del Bot. Se pueden conseguir mediante las funciones del Bot (por ejemplo, recompensas por votar o códigos de canje).</li>
+    <li>Los saldos e inventarios se ofrecen "tal cual" y pueden reiniciarse, ajustarse o eliminarse a nuestra discreción, por ejemplo, para corregir un error, evitar abusos o si un servidor quita el Bot.</li>
+    <li>No garantizamos la disponibilidad permanente de ningún objeto virtual ni saldo.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>5. Lykosaris Premium</h2>
+  <ul>
+    <li>Lykosaris Premium es una suscripción opcional y recurrente que se compra y gestiona íntegramente a través del propio sistema de pagos de Discord (Discord Monetization / Premium Apps, procesado por el proveedor de pagos de Discord). No procesamos ni gestionamos directamente tu información de pago.</li>
+    <li>Lykosaris Premium apoya el desarrollo del Bot y actualmente incluye: personalización de tu tarjeta de <code>/profile</code> (un marco de color, en diseño sólido, por lados o por esquinas, y una cinta diagonal con el texto que elijas), la opción de recibir tu tarjeta de perfil como un GIF animado y la posibilidad de guardar la cuenta del juego de contar después de que se rompa (en los servidores donde ese juego esté activado).</li>
+    <li>Podemos añadir, cambiar o ajustar los beneficios de Premium con el tiempo (por ejemplo, añadir fondos exclusivos, LYKO Coins u otras ventajas) a nuestra discreción. También podemos conceder el estado Premium manualmente, por ejemplo como regalo o como compensación.</li>
+    <li>Las funciones exclusivas de Premium solo están disponibles mientras tu estado Premium esté activo. Es posible que se conserven tus elecciones guardadas, pero no se aplicarán mientras Premium esté inactivo.</li>
+    <li>Tu suscripción se gestiona a través de Discord (incluida la cancelación, la renovación y la facturación): consulta los propios Términos de Monetización de Discord para saber cómo funcionan los pagos, los reembolsos y los ciclos de facturación.</li>
+    <li>Si crees que tu suscripción a Lykosaris Premium no se concedió, aplicó o reflejó correctamente en el Bot (por ejemplo, un beneficio que no aparece tras la compra), tienes derecho a contactar directamente con el creador del Bot ("Mondo") para que se pueda estudiar y resolver el problema juntos.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>6. Donaciones</h2>
+  <p>El comando <code>/donate</code> enlaza con Ko-fi, donde puedes apoyar voluntariamente al Bot. Las donaciones son opcionales, las gestiona íntegramente Ko-fi con sus propios términos y no otorgan ningún beneficio dentro del Bot. No recibimos tus datos de pago a través del Bot.</p>
+</section>
+
+<section>
+  <h2>7. Contenido generado por los usuarios</h2>
+  <p>Algunas funciones permiten que tú o el personal del servidor envíen contenido (mensajes de tickets, autorrespuestas, embeds, preguntas de quiz, anuncios de trades y de tienda, descripciones de equipos, el texto "About Me" del perfil, etc.). Eres el único responsable del contenido que envíes a través del Bot. Nos reservamos el derecho, pero no la obligación, de eliminar contenido que infrinja estos Términos, las normas de Discord o la ley aplicable.</p>
+</section>
+
+<section>
+  <h2>8. Trades, tienda e interacciones entre usuarios</h2>
+  <p>Las funciones de trades, tienda y equipos permiten a los usuarios publicar anuncios y ponerse en contacto entre sí. El Bot no verifica, custodia ni garantiza ningún objeto, precio o acuerdo, y no es parte de ningún trade. Cualquier trato es entre los usuarios implicados y bajo su propio riesgo. La reputación ("me gusta" y "no me gusta") la dejan los usuarios y no la verificamos. Los anuncios deben cumplir las normas de Discord y las del servidor donde se publican.</p>
+</section>
+
+<section>
+  <h2>9. Responsabilidades de los administradores del servidor</h2>
+  <p>Los administradores que configuran el Bot en su servidor son responsables de cómo se configuran y usan sus funciones dentro de ese servidor, incluidos:</p>
+  <ul>
+    <li>Las acciones de moderación realizadas con las herramientas del Bot y los ajustes de herramientas automáticas como el antiraid, el honeypot, el bot scanner, las autorrespuestas y las listas de palabras prohibidas. Estas herramientas actúan según las reglas que fija el personal del servidor; las decisiones de avisar, expulsar, banear o aislar a un miembro son suyas, no nuestras. Si no estás de acuerdo con una decisión así, contacta con el personal de ese servidor.</li>
+    <li>Activar funciones que tratan contenido de los miembros, como el registro de mensajes editados o borrados y las transcripciones de tickets, e informar de ello a sus miembros cuando lo exijan la ley o las normas de Discord.</li>
+    <li>Cualquier mensaje, embed o contenido automatizado que configuren.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>10. Servicios de terceros</h2>
+  <p>Algunas funciones dependen de servicios que no controlamos, como Discord, Top.gg y las plataformas usadas para las notificaciones de redes sociales (YouTube, Twitch, TikTok y Steam). Sus datos pueden llegar con retraso, incompletos o no estar disponibles, y no garantizamos la puntualidad ni la exactitud de las notificaciones. No controlamos ni respaldamos el contenido de esas plataformas, que pertenece a sus respectivos propietarios.</p>
+</section>
+
+<section>
+  <h2>11. Disponibilidad y cambios</h2>
+  <p>El Bot se ofrece "tal cual" y "según disponibilidad". No garantizamos un funcionamiento ininterrumpido ni libre de errores, y las funciones pueden añadirse, cambiarse o eliminarse en cualquier momento sin previo aviso. También podemos actualizar estos Términos de vez en cuando; seguir usando el Bot después de los cambios significa que aceptas los Términos revisados. Los cambios importantes se reflejarán actualizando la fecha de "Última actualización" de arriba.</p>
+</section>
+
+<section>
+  <h2>12. Terminación</h2>
+  <p>Podemos suspender o restringir el acceso al Bot, a un usuario concreto o a un servidor entero, en cualquier momento y sin previo aviso, en particular en casos de abuso, explotación o incumplimiento de estos Términos. El personal del servidor también puede quitar el Bot de su servidor en cualquier momento.</p>
+</section>
+
+<section>
+  <h2>13. Exención de garantías y limitación de responsabilidad</h2>
+  <p>El Bot se ofrece sin garantías de ningún tipo, expresas o implícitas. En la máxima medida permitida por la ley, no somos responsables de ningún daño indirecto, incidental o consecuente derivado de tu uso del Bot, o de no poder usarlo, incluida la pérdida de moneda virtual, objetos, datos o configuración del servidor.</p>
+</section>
+
+<section>
+  <h2>14. Privacidad</h2>
+  <p>El uso que hacemos de tus datos se describe por separado en nuestra <a href="privacy.html" data-internal="privacy.html">Política de privacidad</a>, que forma parte de estos Términos.</p>
+</section>
+
+<section>
+  <h2>15. Contacto</h2>
+  <p>Las preguntas sobre estos Términos pueden enviarse a:</p>
+  <ul>
+    <li>Discord: <code>xxmondoxx_115</code></li>
+    <li>Servidor de soporte del Bot: <em>https://discord.gg/mAyPdt2ZtY</em></li>
+  </ul>
+</section>
+
+</main>
+
 </body>
 </html>
