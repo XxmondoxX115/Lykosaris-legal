@@ -177,7 +177,7 @@
 
 <header>
   <h1><span data-lang="en">🐺 Lykosaris — Privacy Policy</span><span data-lang="es" lang="es">🐺 Lykosaris — Política de privacidad</span></h1>
-  <p class="muted"><span data-lang="en">Last updated: October 4, 2026</span><span data-lang="es" lang="es">Última actualización: 4 de octubre de 2026</span></p>
+  <p class="muted"><span data-lang="en">Last updated: October 8, 2026</span><span data-lang="es" lang="es">Última actualización: 8 de octubre de 2026</span></p>
   <div class="lang-switch" role="group" aria-label="Language / Idioma">
     <button type="button" data-set-lang="en" aria-pressed="true">English</button>
     <button type="button" data-set-lang="es" aria-pressed="false">Español</button>
@@ -215,6 +215,7 @@
     <li><span class="badge">Birthdays</span> The day and month of your birthday (no year), if you choose to set it. It is stored once and applies to every Server where you and the Bot are present. Servers that have a birthday channel configured may announce your birthday there, visible to that channel's members.</li>
     <li><span class="badge">Language</span> Your personal language preference, if you set one.</li>
     <li><span class="badge">Quiz Game</span> Quiz questions and answers created by staff. Quizzes use Discord's native polls; we only read the total number of votes for the correct answer once a poll ends, never who voted for what.</li>
+    <li><span class="badge">/roleplay</span> The family bonds you create with other users: for each bond, the Discord IDs of the two people, its type (partner, marriage, parent and child, or sibling), who the parent is when applicable, and the date it started (plus the wedding date, for marriages). Bonds are not tied to a Server: they follow you in every Server where the Bot is present. Pending requests are stored too (who sent it, who received it, the type, the ID of the Server where it was sent, and the date), and so is your choice to stop receiving new requests. Other people see bonds as a family tree (see section 2).</li>
   </ul>
 
   <h3>Activity &amp; progression data</h3>
@@ -263,6 +264,8 @@
     <li><strong>Server tag role.</strong> If configured, the Bot checks whether a member shows the Server's tag on their profile in order to give or remove a role. This is not stored.</li>
     <li><strong>Forbidden words.</strong> The word lists configured by administrators are enforced by Discord's own AutoMod through rules the Bot creates; the Bot does not scan messages for them itself.</li>
     <li><strong>Media tools.</strong> Images you submit to commands like <code>/media imagetogif</code> are downloaded temporarily to be converted and are not stored.</li>
+    <li><strong>Family trees (Roleplay).</strong> When someone uses the family tree command, or its button in the Roleplay menu, the Bot draws an image with the usernames and profile pictures of the people in that family tree and posts it publicly in the channel. By default it only shows the people who are in that Server (everyone else appears as an anonymous silhouette with a "?"); the owner of a tree can choose to show people from all Servers. To draw it, the Bot checks which people are members of the Server and downloads profile pictures from Discord, keeping them in memory for up to about 10 minutes. The image itself is not stored by the Bot.</li>
+    <li><strong>Roleplay notifications.</strong> When you send someone a Roleplay request, the Bot posts a message in the channel where you sent it, mentioning the recipient (so the members of that channel can see it), and sends them a direct message. When a request is accepted, the person who sent it receives a direct message. Nobody is notified when a request is declined or when a bond is removed.</li>
   </ul>
   <p>We do not read, log, or store the content of your regular messages beyond what is described above. We do not track your activity outside of the specific commands and features you use, and we do not sell, rent, or share your data with advertisers or data brokers.</p>
 </section>
@@ -273,6 +276,7 @@
     <li>To operate the features you or your server's staff choose to use (leveling, economy, tickets, moderation tools, games, notifications, etc).</li>
     <li>To keep server-specific statistics (e.g. member/bot counters, rankings) up to date.</li>
     <li>To provide Lykosaris Premium and handle related support requests.</li>
+    <li>To provide Roleplay: family bonds, requests, and family trees.</li>
     <li>To prevent abuse of the Bot (e.g. anti-raid detection, cooldowns, limits on rewards and redeem codes).</li>
   </ul>
 </section>
@@ -299,6 +303,7 @@
     <li>Server-specific data is <strong>not currently deleted automatically</strong> when the Bot is removed from a Server; it can be deleted on request (see section 6).</li>
     <li>Global data tied to your Discord account (e.g. LYKO Coins, your birthday, your language preference, and vote counts) persists across servers for as long as your account has interacted with the Bot, unless deletion is requested.</li>
     <li>XP history is limited to the last 90 days.</li>
+    <li>Roleplay bonds stay until one of the two people removes them (or until deletion is requested); a removed bond is deleted and no history of it is kept. Pending Roleplay requests do not expire: they stay until they are accepted, declined, or cancelled. If a Discord account is deleted, its bonds can remain until someone removes them, and that account appears as "deleted" in family trees.</li>
     <li>Content that server staff or the Bot post in a Server's channels (such as ticket transcripts and message logs) is kept in Discord according to that Server's own settings and is not controlled by us.</li>
   </ul>
 </section>
@@ -313,6 +318,7 @@
     <li><strong>Objection or restriction</strong> — asking us to stop or limit how we use your data, where the law gives you that right.</li>
   </ul>
   <p>To exercise any of these rights, contact us using the details in section 10. We may need to verify your Discord identity before processing a request, and we will reply within a reasonable time.</p>
+  <p>You can remove your own Roleplay bonds and pending requests yourself at any time from the Roleplay menu. We can also delete all of your Roleplay data on request.</p>
   <p>Please note that some data is controlled by the Server's staff rather than by us (for example, ticket transcripts, message logs, and warnings visible to moderators). We can delete what is in the Bot's database, but you may also need to ask that Server's staff to remove content they hold in Discord. If you are in the European Economic Area or the United Kingdom, you can also contact your local data protection authority.</p>
 </section>
 
@@ -372,6 +378,7 @@
     <li><span class="badge">Cumpleaños</span> El día y el mes de tu cumpleaños (sin año), si decides indicarlo. Se guarda una sola vez y se aplica a todos los Servidores en los que coincidan tú y el Bot. Los Servidores que tengan un canal de cumpleaños configurado pueden anunciar tu cumpleaños allí, a la vista de los miembros de ese canal.</li>
     <li><span class="badge">Idioma</span> Tu preferencia personal de idioma, si la estableces.</li>
     <li><span class="badge">Juego de quiz</span> Las preguntas y respuestas del quiz creadas por el personal. Los quizzes usan las encuestas nativas de Discord; solo leemos el total de votos de la respuesta correcta cuando termina una encuesta, nunca quién votó qué.</li>
+    <li><span class="badge">/roleplay</span> Los vínculos familiares que creas con otros usuarios: de cada vínculo, los ID de Discord de las dos personas, su tipo (pareja, matrimonio, padre/madre e hijo/a, o hermano/a), quién es el padre o la madre cuando corresponde, la fecha en que empezó (y la fecha de la boda, en los matrimonios). Los vínculos no dependen de un Servidor: te acompañan en todos los Servidores donde esté el Bot. También se guardan las solicitudes pendientes (quién la envió, quién la recibió, el tipo, el ID del Servidor desde el que se envió y la fecha) y tu decisión de dejar de recibir solicitudes nuevas. Otras personas ven los vínculos en forma de árbol familiar (ver sección 2).</li>
   </ul>
 
   <h3>Datos de actividad y progreso</h3>
@@ -420,6 +427,8 @@
     <li><strong>Rol de server tag.</strong> Si está configurado, el Bot comprueba si un miembro muestra el tag del Servidor en su perfil para darle o quitarle un rol. Esto no se guarda.</li>
     <li><strong>Palabras prohibidas.</strong> Las listas de palabras configuradas por los administradores las aplica el AutoMod de Discord mediante reglas que crea el Bot; el Bot no analiza los mensajes por su cuenta para esto.</li>
     <li><strong>Herramientas multimedia.</strong> Las imágenes que envías a comandos como <code>/media imagetogif</code> se descargan temporalmente para convertirlas y no se guardan.</li>
+    <li><strong>Árboles familiares (Roleplay).</strong> Cuando alguien usa el comando del árbol familiar, o su botón en el menú de Roleplay, el Bot dibuja una imagen con los nombres de usuario y las fotos de perfil de las personas de ese árbol y la publica a la vista de todos en el canal. Por defecto solo muestra a las personas que están en ese Servidor (el resto aparece como una silueta anónima con un "?"); el propietario de un árbol puede elegir mostrar a las personas de todos los Servidores. Para dibujarlo, el Bot comprueba qué personas son miembros del Servidor y descarga las fotos de perfil desde Discord, y las conserva en memoria hasta unos 10 minutos. El Bot no guarda la imagen.</li>
+    <li><strong>Avisos de Roleplay.</strong> Cuando envías una solicitud de Roleplay a alguien, el Bot publica un mensaje en el canal desde el que la enviaste, mencionando a esa persona (así que los miembros de ese canal pueden verlo), y le manda un mensaje directo. Cuando se acepta una solicitud, quien la envió recibe un mensaje directo. No se avisa a nadie cuando se rechaza una solicitud ni cuando se elimina un vínculo.</li>
   </ul>
   <p>No leemos, registramos ni guardamos el contenido de tus mensajes normales más allá de lo descrito arriba. No rastreamos tu actividad fuera de los comandos y funciones concretos que uses, y no vendemos, alquilamos ni compartimos tus datos con anunciantes ni intermediarios de datos.</p>
 </section>
@@ -430,6 +439,7 @@
     <li>Para hacer funcionar las funciones que tú o el personal de tu servidor elijan usar (niveles, economía, tickets, herramientas de moderación, juegos, notificaciones, etc.).</li>
     <li>Para mantener al día las estadísticas de cada servidor (p. ej., contadores de miembros y bots, rankings).</li>
     <li>Para ofrecer Lykosaris Premium y atender las solicitudes de soporte relacionadas.</li>
+    <li>Para ofrecer Roleplay: vínculos familiares, solicitudes y árboles familiares.</li>
     <li>Para prevenir abusos del Bot (p. ej., detección de raids, tiempos de espera, límites en recompensas y códigos de canje).</li>
   </ul>
 </section>
@@ -456,6 +466,7 @@
     <li>Los datos específicos de un Servidor <strong>no se borran automáticamente por ahora</strong> cuando se quita el Bot de él; se pueden borrar a petición (ver sección 6).</li>
     <li>Los datos globales vinculados a tu cuenta de Discord (p. ej., LYKO Coins, tu cumpleaños, tu preferencia de idioma y el número de votos) persisten entre servidores mientras tu cuenta haya interactuado con el Bot, salvo que se solicite su borrado.</li>
     <li>El historial de XP se limita a los últimos 90 días.</li>
+    <li>Los vínculos de Roleplay se conservan hasta que una de las dos personas los elimina (o hasta que se solicite su borrado); un vínculo eliminado se borra y no se guarda ningún historial de él. Las solicitudes pendientes de Roleplay no caducan: se quedan hasta que se aceptan, se rechazan o se cancelan. Si se elimina una cuenta de Discord, sus vínculos pueden permanecer hasta que alguien los quite, y esa cuenta aparece como "eliminado" en los árboles familiares.</li>
     <li>El contenido que el personal del servidor o el Bot publican en los canales de un Servidor (como las transcripciones de tickets y los registros de mensajes) se conserva en Discord según los ajustes de ese Servidor y no lo controlamos nosotros.</li>
   </ul>
 </section>
@@ -470,6 +481,7 @@
     <li><strong>Oposición o limitación</strong>: que dejemos de usar tus datos o limitemos su uso, cuando la ley te dé ese derecho.</li>
   </ul>
   <p>Para ejercer cualquiera de estos derechos, contáctanos con los datos de la sección 10. Puede que necesitemos verificar tu identidad en Discord antes de tramitar una solicitud, y responderemos en un plazo razonable.</p>
+  <p>Puedes eliminar tú mismo/a tus vínculos y solicitudes pendientes de Roleplay en cualquier momento desde el menú de Roleplay. También podemos borrar todos tus datos de Roleplay si nos lo pides.</p>
   <p>Ten en cuenta que algunos datos los controla el personal del Servidor y no nosotros (por ejemplo, las transcripciones de tickets, los registros de mensajes y los avisos visibles para los moderadores). Nosotros podemos borrar lo que esté en la base de datos del Bot, pero quizá también tengas que pedir al personal de ese Servidor que elimine el contenido que conserva en Discord. Si te encuentras en el Espacio Económico Europeo o en el Reino Unido, también puedes dirigirte a tu autoridad local de protección de datos.</p>
 </section>
 
